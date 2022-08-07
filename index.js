@@ -2,6 +2,7 @@ const { default: axios } = require('axios')
 var express = require('express')
 var app = express()
 const API_TOKEN = process.env.API_TOKEN
+const PORT = process.env.PORT || 8080
 
 app.use(express.static("public"))
 
@@ -24,6 +25,6 @@ app.get("/api/observation", async function (req, res) {
 })
 
 
-app.listen(3000, function(){
-    console.log(process.env)
+app.listen(PORT, function(){
+    console.log(`listening on port ${PORT}`)
 })
