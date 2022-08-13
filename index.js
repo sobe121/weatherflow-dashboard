@@ -1,6 +1,7 @@
 const { default: axios } = require('axios')
 var express = require('express')
 var app = express()
+require('dotenv').config()
 const API_TOKEN = process.env.API_TOKEN
 const PORT = process.env.PORT || 8080
 
