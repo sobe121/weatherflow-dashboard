@@ -1,6 +1,9 @@
 body{
     background-color: rgb(39, 39, 39);
 }
+.card{
+    width: 25rem;
+}
 #wind-wrapper{
     flex-direction: row;
     display: flex;
