@@ -19,14 +19,24 @@ const ICONS = {
 "thunderstorm" : "/images/animated/thunder.svg",
 "windy" : "/images/animated/day.svg",
 }
+const PRESSURE_ICONS = {
+    "steady" : "bi bi-arrow-right-circle",
+    "falling" : "bi bi-arrow-down-right-circle",
+    "rising" : "bi bi-arrow-up-right-circle",
+    "unknown" : "bi bi-question-circle"
+}
 window.onload = async () => {
     setTime(new Date())
+    setInterval(() => {
+        setTime(new Date())
+    }, 60000);
     setDate(new Date())
     let forecastData = await getForecastData()
-    generateForeCards(forecastData.forecast, )    
+    generateForeCards(forecastData.forecast, )  
+    generateCurrentConditions(forecastData.current_conditions)  
 }
 function setTime(date) {
-    document.getElementById("time").innerText = date.toLocaleTimeString()
+    document.getElementById("time").innerText = date.toLocaleTimeString([] , {hour: '2-digit', minute: '2-digit'})
 }
 function setDate(date) {
     document.getElementById("date").innerText = date.toDateString()
@@ -46,10 +56,23 @@ function generateForeCards(forecast, min) {
             <h6 class="card-subtitle mb-2">Low ${day.air_temp_low}°F</h6>
         </div>
          </div>`)
-        $("#forecast-container").append(element)
+        $("#forecast-container").prepend(element)
     }
 }
 function getDayName(date, locale)
 {
+    if (date.toDateString()==(new Date()).toDateString()){
+        return "Today"
+    }
     return date.toLocaleDateString(locale, { weekday: 'long' });        
+}
+function generateCurrentConditions(currentConditions){
+    $("#humidity").html(`<b>Humidity</b> ${currentConditions.relative_humidity}%`)
+    $("#pressure").html(`<b>Pressure</b> ${currentConditions.station_pressure} mb <i class="${PRESSURE_ICONS[currentConditions.pressure_trend]}"></i>`)
+    $("#uv").html(`<b>UV Index</b> ${currentConditions.uv}`)
+    $("#precip-local-day").html(`<b>Rainfall</b> ${currentConditions.precip_accum_local_day} in`)
+    $("#conditions-icon").attr("src", `${ICONS[currentConditions.icon]}`)
+    $("#conditions").text(` ${currentConditions.conditions}`)
+    $("#temperature").text(` ${currentConditions.air_temperature}°F`)
+    $("#feels-like").text(`Feels like ${currentConditions.feels_like}°F`)
 }
